@@ -179,8 +179,8 @@ void fill_feature_structs(wordLists *arrFeature, char fileName[]){
 }
 
 void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline){
-  FILE *clickbaitFile = fopen("clickbait.txt", "r");
-  FILE *nonClickbaitFile = fopen("non_clickbait.txt", "r");
+  FILE *clickbaitFile = fopen("headline_Files/clickbait.txt", "r");
+  FILE *nonClickbaitFile = fopen("headline_Files/non_clickbait.txt", "r");
   char input[LENGTH];
 
 
