@@ -1,0 +1,2 @@
+C:\Users\madsh\AppData\Local\Temp\ccK5QpqX.o:clickbait.c:(.text+0xc): undefined reference to `train_classifier'
+collect2.exe: error: ld returned 1 exit status
