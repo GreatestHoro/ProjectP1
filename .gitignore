@@ -1,3 +1,5 @@
 *.exe 
 *.train_file.o
 *.train_file.h.gch
+*.make.h.gch
+*.o
