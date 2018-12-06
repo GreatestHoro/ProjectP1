@@ -2,5 +2,5 @@
 4167  672   hyperbolic       
 440   941   slang            
 12320 6993  forward_reference
-2388  33    contraction      
+2403  108   contraction      
 15999 16001 32000 overall_headlines
