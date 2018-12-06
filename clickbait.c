@@ -55,10 +55,10 @@ void train_classifier(void){
   arrHeadline = (headline *) malloc(HEADLINES * sizeof(headline));
 
   fill_headline_struct(arrHeadline, &totalHeadlines, &clickbaitHeadline, &nonClickbaitHeadline);
-  fill_feature_structs(&arrHyperbolic, "hyperbolic.txt");
-  fill_feature_structs(&arrSlang, "slang.txt");
-  fill_feature_structs(&arrForwardReference, "forward_reference.txt");
-  fill_feature_structs(&arrContraction, "contract.txt");
+  fill_feature_structs(&arrHyperbolic, "data_Files/hyperbolic.txt");
+  fill_feature_structs(&arrSlang, "data_Files/slang.txt");
+  fill_feature_structs(&arrForwardReference, "data_Files/forward_reference.txt");
+  fill_feature_structs(&arrContraction, "data_Files/contract.txt");
 
 
   set_feature_to_zero(&numberFeature, "number");
