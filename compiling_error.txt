@@ -1,0 +1,16 @@
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c: In function 'main':
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c:17:3: warning: implicit declaration of function 'make_calculations' [-Wimplicit-function-declaration]
+   make_calculations();
+   ^~~~~~~~~~~~~~~~~
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c: At top level:
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c:22:1: warning: return type defaults to 'int' [-Wimplicit-int]
+ make_calculations(void){
+ ^~~~~~~~~~~~~~~~~
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c: In function 'copy_data_from_file':
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c:33:6: error: 'dataFile' undeclared (first use in this function)
+   if(dataFile != NULL){
+      ^~~~~~~~
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c:33:6: note: each undeclared identifier is reported only once for each function it appears in
+C:\Users\madsh\OneDrive\Universitetet\P1\BashBoi\ProjectP1\clickbait.c:34:39: error: 'dataFiles' undeclared (first use in this function)
+     while(fgets(input, sizeof(input), dataFiles)){
+                                       ^~~~~~~~~

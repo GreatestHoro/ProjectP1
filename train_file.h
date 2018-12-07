@@ -13,6 +13,7 @@ typedef struct {
 } wordStrut;
 
 typedef struct{
+  char featureName[LENGTH];
   wordStrut words[LENGTH];
   int totalWords;
 }wordLists;
@@ -24,10 +25,10 @@ typedef struct{
 }feature;
 
 void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline);
-void train_classifier(void);
+void train_classifier(wordLists allWordLists[]);
 void feature_number(feature *numberFeature, headline arrHeadline);
 void set_feature_to_zero(feature *data, char name[]);
-void fill_feature_structs(wordLists *arrHyperbolic, char fileName[]);
+void fill_feature_structs(wordLists *arrHyperbolic, char fileName[], char featureName[]);
 void feature_string_count(feature *featureData, headline arrHeadline, wordLists arrHyperbolic);
 void output_feature_data_document(feature numberFeature, feature hyperbolicFeature, feature slangFeature,
                                   feature forwardReferenceFeature, feature contractionFeature,

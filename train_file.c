@@ -6,7 +6,7 @@
 #include <limits.h>
 #include "train_file.h"
 
-void train_classifier(void){
+void train_classifier(wordLists allWordLists[]){
   headline *arrHeadline;
   wordLists arrHyperbolic, arrSlang, arrForwardReference, arrContraction;
   feature numberFeature, hyperbolicFeature, slangFeature, contractionFeature, forwardReferenceFeature;
@@ -15,11 +15,15 @@ void train_classifier(void){
   arrHeadline = (headline *) malloc(HEADLINES * sizeof(headline));
 
   fill_headline_struct(arrHeadline, &totalHeadlines, &clickbaitHeadline, &nonClickbaitHeadline);
-  fill_feature_structs(&arrHyperbolic, "data_Files/hyperbolic.txt");
-  fill_feature_structs(&arrSlang, "data_Files/slang.txt");
-  fill_feature_structs(&arrForwardReference, "data_Files/forward_reference.txt");
-  fill_feature_structs(&arrContraction, "data_Files/contract.txt");
+  fill_feature_structs(&arrHyperbolic, "data_Files/hyperbolic.txt", "hyperbolic");
+  fill_feature_structs(&arrSlang, "data_Files/slang.txt", "slang");
+  fill_feature_structs(&arrForwardReference, "data_Files/forward_reference.txt", "forward_reference");
+  fill_feature_structs(&arrContraction, "data_Files/contract.txt", "contraction");
 
+  allWordLists[0] = arrHyperbolic;
+  allWordLists[1] = arrSlang;
+  allWordLists[2] = arrForwardReference;
+  allWordLists[3] = arrContraction;
 
   set_feature_to_zero(&numberFeature, "number");
   set_feature_to_zero(&hyperbolicFeature, "hyperbolic");
@@ -37,7 +41,7 @@ void train_classifier(void){
 
 
   }
-
+/*
   printf("%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
@@ -47,7 +51,7 @@ void train_classifier(void){
                                                                slangFeature.featureName, slangFeature.clickbaitNumber, slangFeature.nonClickbaitNumber,
                                                                forwardReferenceFeature.featureName, forwardReferenceFeature.clickbaitNumber, forwardReferenceFeature.nonClickbaitNumber,
                                                                contractionFeature.featureName, contractionFeature.clickbaitNumber, contractionFeature.nonClickbaitNumber);
-
+*/
     output_feature_data_document(numberFeature, hyperbolicFeature, slangFeature,
                                  forwardReferenceFeature, contractionFeature,
                                  clickbaitHeadline, nonClickbaitHeadline);
@@ -83,12 +87,12 @@ void output_feature_data_document(feature numberFeature, feature hyperbolicFeatu
                                   int clickbaitHeadline, int nonClickbaitHeadline){
   FILE *writeData = fopen("output_data.txt", "w");
   if(writeData != NULL){
-    fprintf(writeData, "%-5d %-5d %-17s\n"
-                       "%-5d %-5d %-17s\n"
-                       "%-5d %-5d %-17s\n"
-                       "%-5d %-5d %-17s\n"
-                       "%-5d %-5d %-17s\n"
-                       "%-5d %-5d %-5d overall_headlines\n", numberFeature.clickbaitNumber, numberFeature.nonClickbaitNumber, numberFeature.featureName,
+    fprintf(writeData, "%d %d %s\n"
+                       "%d %d %s\n"
+                       "%d %d %s\n"
+                       "%d %d %s\n"
+                       "%d %d %s\n"
+                       "%d %d overall_headlines\n", numberFeature.clickbaitNumber, numberFeature.nonClickbaitNumber, numberFeature.featureName,
                      hyperbolicFeature.clickbaitNumber, hyperbolicFeature.nonClickbaitNumber, hyperbolicFeature.featureName,
                    slangFeature.clickbaitNumber, slangFeature.nonClickbaitNumber, slangFeature.featureName,
                  forwardReferenceFeature.clickbaitNumber, forwardReferenceFeature.nonClickbaitNumber, forwardReferenceFeature.featureName,
@@ -117,7 +121,7 @@ void feature_number(feature *featureData, headline arrHeadline){
   }while((i < len) &&  digit != 1);
 }
 
-void fill_feature_structs(wordLists *arrFeature, char fileName[]){
+void fill_feature_structs(wordLists *arrFeature, char fileName[], char featureName[]){
   FILE *filePointer = fopen(fileName, "r");
   char input[LENGTH];
   int i = 0, len;
@@ -127,13 +131,13 @@ void fill_feature_structs(wordLists *arrFeature, char fileName[]){
   }
   while(fgets(input, LENGTH, filePointer) != NULL){
     len = strlen(input) - 1;
+    strcpy(arrFeature->featureName, featureName);
     if(len > 1){
       strcpy(input + len, "\0");
       strcpy(arrFeature->words[i].word, input);
       i++;
     }
   }
-
   arrFeature->totalWords = i;
   fclose(filePointer);
 }
