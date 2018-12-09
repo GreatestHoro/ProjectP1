@@ -1,7 +1,7 @@
 this
 he
 she
-it
+ it 
 here
 there
 the
@@ -18,4 +18,3 @@ whose
 which
 such
 why
-
