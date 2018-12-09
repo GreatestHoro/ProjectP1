@@ -16,8 +16,8 @@ typedef struct{
 void make_calculations(wordLists allWordLists[]);
 void copy_data_from_file(outputFeatureData featureData[], int *numOfFeat);
 void evaluate_headline(outputFeatureData featureData[], int numOfFeat, wordLists allWordLists[], char headline[]);
-void look_through_headline(char headline[], outputFeatureData featureData, wordLists allWordLists[]);
-void check_number_feature(char headline[], outputFeatureData featureData);
+void look_through_headline(char headline[], outputFeatureData *featureData, wordLists allWordLists[]);
+void check_number_feature(char headline[], outputFeatureData *featureData);
 void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *result);
 
 
@@ -38,15 +38,13 @@ void make_calculations(wordLists allWordLists[]){
 
   copy_data_from_file(featureData, &numOfFeat);
   evaluate_headline(featureData, numOfFeat, allWordLists, headline);
-  for (i = 0; i < numOfFeat; i++) {
-    printf("is isPrevailent = %d\n", featureData[i].isPrevailent);
-  }
 
 
   calc_naive_bayes(featureData, numOfFeat, &result);
 
 }
-
+//function that takes in featureData array, and calculates the probability for a headline is
+//clickbait given these features are isPrevailent in the headline
 void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *result){
   double numerator = 1.0, denominator = 1.0;
   int numOfClickbait, numOfNonClickbait, totalHeadlines;
@@ -54,16 +52,15 @@ void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *re
   numOfClickbait = featureData[numOfFeat - 1].clickbaitNumber;
   numOfNonClickbait = featureData[numOfFeat - 1].nonClickbaitNumber;
   totalHeadlines = numOfClickbait + numOfNonClickbait;
-
+  //first objective is to calculate the probability that a HLine is CB given these prevailent features
+  // P(CB = Yes | x1, x2, ... xn)
   int i;
+  //loop to calculate each numerator of features that are prevailent in the hLine according to NB
   for(i = 0; i < numOfFeat - 1; i++){
-    printf("før\n");
-    printf("is isPrevailent = %d\n", featureData[i].isPrevailent);
      if (featureData[i].isPrevailent == 1){
-       printf("inde\n");
       numerator *= ((double) featureData[i].clickbaitNumber / (double) numOfClickbait);
       printf("%s - %d %d\n", featureData[i].featureName, featureData[i].clickbaitNumber, featureData[i].nonClickbaitNumber);
-      printf("numerator %lf\n", numerator);
+      //  printf("numerator %lf\n", numerator);
      }
   }
   numerator *= ((double) numOfClickbait / (double) totalHeadlines);
@@ -80,18 +77,17 @@ void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *re
 
 void evaluate_headline(outputFeatureData featureData[], int numOfFeat, wordLists allWordLists[], char headline[]){
   int i, j;
-      check_number_feature(headline, featureData[0]);
+      check_number_feature(headline, &featureData[0]);
       for(i = 1; i < numOfFeat; i++) {
-        look_through_headline(headline, featureData[i], allWordLists);
+        look_through_headline(headline, &featureData[i], allWordLists);
       }
-
 
 }
 
-void look_through_headline(char headline[], outputFeatureData featureData, wordLists allWordLists[]){
+void look_through_headline(char headline[], outputFeatureData *featureData, wordLists allWordLists[]){
   char tempString[LENGTH];
   int i = 0, j = 0;
-  featureData.isPrevailent = 0;
+  featureData->isPrevailent = 0;
 
   strcpy(tempString, headline);
   while(tempString[i]){
@@ -99,31 +95,29 @@ void look_through_headline(char headline[], outputFeatureData featureData, wordL
     i++;
   }
     for (i = 0; i < NUM_OF_WORD_FEATS; i++) {
-      if(strcmp(allWordLists[i].featureName, featureData.featureName) == 0) {
+      if(strcmp(allWordLists[i].featureName, featureData->featureName) == 0) {
         do{
           if(strstr(tempString, allWordLists[i].words[j].word) != NULL){
-            featureData.isPrevailent = 1;
-            //printf("%s %s - %s\n", featureData.featureName, allWordLists[i].words[j].word, tempString);
+            featureData->isPrevailent = 1;
           }
           j++;
-        }while(j < allWordLists[i].totalWords && featureData.isPrevailent != 1);
+        }while(j < allWordLists[i].totalWords && featureData->isPrevailent != 1);
       }
     }
 }
 
-void check_number_feature(char headline[], outputFeatureData featureData){
+void check_number_feature(char headline[], outputFeatureData *featureData){
   int i = 0, len = strlen(headline), digit = 0;
 
   do{
     if(digit = isdigit(headline[i])) {
-      featureData.isPrevailent = 1;
+      featureData->isPrevailent = 1;
       digit = 1;
     }else{
-      featureData.isPrevailent = 0;
+      featureData->isPrevailent = 0;
     }
     i++;
   }while((i < len) &&  digit != 1);
-
 }
 
 void copy_data_from_file(outputFeatureData featureData[], int *numOfFeat){
