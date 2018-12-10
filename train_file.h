@@ -25,7 +25,7 @@ typedef struct{
 }feature;
 
 void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline);
-void train_classifier(wordLists allWordLists[]);
+void train_classifier(wordLists allWordLists[], headline *arrHeadline);
 void feature_number(feature *numberFeature, headline arrHeadline);
 void set_feature_to_zero(feature *data, char name[]);
 void fill_feature_structs(wordLists *arrHyperbolic, char fileName[], char featureName[]);

@@ -6,13 +6,11 @@
 #include <limits.h>
 #include "train_file.h"
 
-void train_classifier(wordLists allWordLists[]){
-  headline *arrHeadline;
+void train_classifier(wordLists allWordLists[], headline *arrHeadline){
+
   wordLists arrHyperbolic, arrSlang, arrForwardReference, arrContraction;
   feature numberFeature, hyperbolicFeature, slangFeature, contractionFeature, forwardReferenceFeature;
   int i, totalHeadlines = 0, clickbaitHeadline = 0, nonClickbaitHeadline = 0;
-
-  arrHeadline = (headline *) malloc(HEADLINES * sizeof(headline));
 
   fill_headline_struct(arrHeadline, &totalHeadlines, &clickbaitHeadline, &nonClickbaitHeadline);
   fill_feature_structs(&arrHyperbolic, "data_Files/hyperbolic.txt", "hyperbolic");
@@ -37,9 +35,6 @@ void train_classifier(wordLists allWordLists[]){
     feature_string_count(&slangFeature, arrHeadline[i], arrSlang);
     feature_string_count(&forwardReferenceFeature, arrHeadline[i], arrForwardReference);
     feature_string_count(&contractionFeature, arrHeadline[i], arrContraction);
-
-
-
   }
 /*
   printf("%-20s is used int %-5d clickbait and %-5d nonclickbait\n"

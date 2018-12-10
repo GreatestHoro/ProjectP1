@@ -1,20 +1,20 @@
-this
-he
-she
+ this
+ he
+ she
  it 
-here
-there
-the
-these
-they
-them
-that
-those
-such
-none
-neither
-who
-whose
-which
-such
-why
+ here
+ there
+ the
+ these
+ they
+ them
+ that
+ those
+ such
+ none
+ neither
+ who
+ whose
+ which
+ such
+ why
