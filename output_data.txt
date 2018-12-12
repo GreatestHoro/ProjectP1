@@ -1,6 +1,6 @@
 4970 2118 number
-2917 460 hyperbolic
-143 1 slang
+4592 674 hyperbolic
+331 647 slang
 5968 1579 forward_reference
 1685 79 contraction
 11200 11200 overall_headlines

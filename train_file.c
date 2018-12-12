@@ -36,7 +36,7 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline){
     feature_string_count(&forwardReferenceFeature, arrHeadline[i], arrForwardReference);
     feature_string_count(&contractionFeature, arrHeadline[i], arrContraction);
   }
-/*
+
   printf("%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
@@ -46,7 +46,7 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline){
                                                                slangFeature.featureName, slangFeature.clickbaitNumber, slangFeature.nonClickbaitNumber,
                                                                forwardReferenceFeature.featureName, forwardReferenceFeature.clickbaitNumber, forwardReferenceFeature.nonClickbaitNumber,
                                                                contractionFeature.featureName, contractionFeature.clickbaitNumber, contractionFeature.nonClickbaitNumber);
-*/
+
     output_feature_data_document(numberFeature, hyperbolicFeature, slangFeature,
                                  forwardReferenceFeature, contractionFeature,
                                  clickbaitHeadline, nonClickbaitHeadline);
