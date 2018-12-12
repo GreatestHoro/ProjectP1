@@ -1,11 +1,11 @@
 # The name of the source files
-SOURCES = clickbait.c train_file.c
+SOURCES = clickbait.c train_file.c make_calc.c
 
 # The name of the executable
 EXE = results
 
 # Flags for compilation (adding warnings are always good)
-CFLAGS = 
+CFLAGS =
 
 # Flags for linking (none for the moment)
 LDFLAGS =
@@ -43,3 +43,4 @@ clean:
 # Finally we need to tell "make" what source and header file each object file depends on
 clickbait.o: clickbait.c train_file.h
 train_file.o: train_file.c train_file.h
+make_calc.o: make_calc.c train_file.h
