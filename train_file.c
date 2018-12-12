@@ -54,6 +54,82 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline){
   free(arrHeadline);
 }
 
+void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline){
+  FILE *clickbaitFile = fopen("headline_Files/clickbait.txt", "r");
+  FILE *nonClickbaitFile = fopen("headline_Files/non_clickbait.txt", "r");
+  char input[LENGTH];
+
+  if(clickbaitFile != NULL && nonClickbaitFile != NULL){
+    while(fgets(input, sizeof(input), clickbaitFile) != NULL){
+      if(strlen(input) > 1){
+        strcpy(arrHeadline[*totalHeadlines].text, input);
+        arrHeadline[*totalHeadlines].isClickbait = 1;
+        //printf("%d - %s", *totalHeadlines ,arrHeadline[*totalHeadlines].text);
+        *clickbaitHeadline += 1;
+        *totalHeadlines += 1;
+      }
+    }
+    while(fgets(input, sizeof(input), nonClickbaitFile) != NULL){
+      if(strlen(input) > 1){
+        strcpy(arrHeadline[*totalHeadlines].text, input);
+        arrHeadline[*totalHeadlines].isClickbait = 0;
+        //printf("%d - %s", *totalHeadlines ,arrHeadline[*totalHeadlines].text);
+        *nonClickbaitHeadline += 1;
+        *totalHeadlines += 1;
+      }
+    }
+  }else{
+    printf("Error!\n");
+    exit(EXIT_FAILURE);
+  }
+  printf("%d headlines, %d clickbait and %d not clickbait\n", *totalHeadlines, *clickbaitHeadline, *nonClickbaitHeadline);
+
+  fclose(clickbaitFile);
+  fclose(nonClickbaitFile);
+}
+
+void fill_feature_structs(wordLists *arrFeature, char fileName[], char featureName[]){
+  FILE *filePointer = fopen(fileName, "r");
+  char input[LENGTH];
+  int i = 0, len;
+  if (filePointer == NULL) {
+    printf("Sorry Could Not Open File In fill_feature_structs. Bye.\n");
+    exit(EXIT_FAILURE);
+  }
+  while(fgets(input, LENGTH, filePointer) != NULL){
+    len = strlen(input) - 1;
+    strcpy(arrFeature->featureName, featureName);
+    if(len > 1){
+      strcpy(input + len, "\0");
+      strcpy(arrFeature->words[i].word, input);
+      i++;
+    }
+  }
+  arrFeature->totalWords = i;
+  fclose(filePointer);
+}
+
+void set_feature_to_zero(feature *data, char name[]){
+  strcpy(data->featureName, name);
+  data->clickbaitNumber = 0;
+  data->nonClickbaitNumber = 0;
+}
+
+void feature_number(feature *featureData, headline arrHeadline){
+  int i = 0, len = strlen(arrHeadline.text), digit = 0;
+
+  do{
+    if(digit = isdigit(arrHeadline.text[i])) {
+      if(arrHeadline.isClickbait){
+        featureData->clickbaitNumber += 1;
+      }else{
+        featureData->nonClickbaitNumber += 1;
+      }
+    }
+    i++;
+  }while((i < len) &&  digit != 1);
+}
+
 void feature_string_count(feature *featureData, headline arrHeadline, wordLists words){
   int digit = 0, i = 0, j = 0;
   char tempString[LENGTH];
@@ -99,81 +175,4 @@ void output_feature_data_document(feature numberFeature, feature hyperbolicFeatu
   }
 
   fclose(writeData);
-}
-
-void feature_number(feature *featureData, headline arrHeadline){
-  int i = 0, len = strlen(arrHeadline.text), digit = 0;
-
-  do{
-    if(digit = isdigit(arrHeadline.text[i])) {
-      if(arrHeadline.isClickbait){
-        featureData->clickbaitNumber += 1;
-      }else{
-        featureData->nonClickbaitNumber += 1;
-      }
-    }
-    i++;
-  }while((i < len) &&  digit != 1);
-}
-
-void fill_feature_structs(wordLists *arrFeature, char fileName[], char featureName[]){
-  FILE *filePointer = fopen(fileName, "r");
-  char input[LENGTH];
-  int i = 0, len;
-  if (filePointer == NULL) {
-    printf("Sorry Could Not Open File In fill_feature_structs. Bye.\n");
-    exit(EXIT_FAILURE);
-  }
-  while(fgets(input, LENGTH, filePointer) != NULL){
-    len = strlen(input) - 1;
-    strcpy(arrFeature->featureName, featureName);
-    if(len > 1){
-      strcpy(input + len, "\0");
-      strcpy(arrFeature->words[i].word, input);
-      i++;
-    }
-  }
-  arrFeature->totalWords = i;
-  fclose(filePointer);
-}
-
-void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline){
-  FILE *clickbaitFile = fopen("headline_Files/clickbait.txt", "r");
-  FILE *nonClickbaitFile = fopen("headline_Files/non_clickbait.txt", "r");
-  char input[LENGTH];
-
-
-  if(clickbaitFile != NULL && nonClickbaitFile != NULL){
-    while(fgets(input, sizeof(input), clickbaitFile) != NULL){
-      if(strlen(input) > 1){
-        strcpy(arrHeadline[*totalHeadlines].text, input);
-        arrHeadline[*totalHeadlines].isClickbait = 1;
-        //printf("%d - %s", *totalHeadlines ,arrHeadline[*totalHeadlines].text);
-        *clickbaitHeadline += 1;
-        *totalHeadlines += 1;
-      }
-    }
-    while(fgets(input, sizeof(input), nonClickbaitFile) != NULL){
-      if(strlen(input) > 1){
-        strcpy(arrHeadline[*totalHeadlines].text, input);
-        arrHeadline[*totalHeadlines].isClickbait = 0;
-        //printf("%d - %s", *totalHeadlines ,arrHeadline[*totalHeadlines].text);
-        *nonClickbaitHeadline += 1;
-        *totalHeadlines += 1;
-      }
-    }
-  }else{
-    printf("Error!\n");
-    exit(EXIT_FAILURE);
-  }
-  printf("%d headlines, %d clickbait and %d not clickbait\n", *totalHeadlines, *clickbaitHeadline, *nonClickbaitHeadline);
-
-  fclose(clickbaitFile);
-  fclose(nonClickbaitFile);
-}
-
-void set_feature_to_zero(feature *data, char name[]){
-  strcpy(data->featureName, name);
-  data->clickbaitNumber = 0;
-  data->nonClickbaitNumber = 0;
 }
