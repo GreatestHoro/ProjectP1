@@ -7,7 +7,7 @@
 
 int main(void){
   wordLists allWordLists[NUM_OF_WORD_FEATS];
-  feature allFeature[5];
+  feature allFeature[NUM_OF_WORD_FEATS + 1];
   headline *arrHeadline;
 
   arrHeadline = (headline *) malloc(HEADLINES * sizeof(headline));

@@ -11,15 +11,6 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature a
   int i, totalHeadlines = 0, clickbaitHeadline = 0, nonClickbaitHeadline = 0;
 
   fill_headline_struct(arrHeadline, &totalHeadlines, &clickbaitHeadline, &nonClickbaitHeadline);
-/*
-  for(i = 0; i < HEADLINES; i++){
-    feature_number(&numberFeature, arrHeadline[i]);
-    feature_string_count(&hyperbolicFeature, arrHeadline[i], arrHyperbolic);
-    feature_string_count(&slangFeature, arrHeadline[i], arrSlang);
-    feature_string_count(&forwardReferenceFeature, arrHeadline[i], arrForwardReference);
-    feature_string_count(&contractionFeature, arrHeadline[i], arrContraction);
-  }
-  */
 
   for(i = 0; i < HEADLINES; i++){
     feature_number(&allFeature[0], arrHeadline[i]);
