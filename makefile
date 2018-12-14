@@ -1,5 +1,5 @@
 # The name of the source files
-SOURCES = clickbait.c train_file.c make_calc.c
+SOURCES = clickbait.c train_file.c make_calc.c fill_feature_structs.c
 
 # The name of the executable
 EXE = results
@@ -44,3 +44,4 @@ clean:
 clickbait.o: clickbait.c train_file.h
 train_file.o: train_file.c train_file.h
 make_calc.o: make_calc.c train_file.h
+fill_feature_structs.o: fill_feature_structs.c train_file.h

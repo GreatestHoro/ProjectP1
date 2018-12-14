@@ -64,6 +64,9 @@ void load_test_set(int *headlineAmmount, testSet *testDataSet);
 void set_prediction(testSet *testDataSet, int headlineAmmount, double percentIsCB);
 void find_precision_racall(testSet *testDataSet, int headlineAmmount);
 
+/*fill_feature_structs.h*/
+void initilize_program(wordLists allWordLists[], feature allFeature[]);
+
 /*train_file.h*/
 void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline);
 void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature allFeature[]);
