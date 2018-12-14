@@ -6,29 +6,12 @@
 #include <limits.h>
 #include "train_file.h"
 
-void train_classifier(wordLists allWordLists[], headline *arrHeadline){
+void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature allFeature[]){
 
-  wordLists arrHyperbolic, arrSlang, arrForwardReference, arrContraction;
-  feature numberFeature, hyperbolicFeature, slangFeature, contractionFeature, forwardReferenceFeature;
   int i, totalHeadlines = 0, clickbaitHeadline = 0, nonClickbaitHeadline = 0;
 
   fill_headline_struct(arrHeadline, &totalHeadlines, &clickbaitHeadline, &nonClickbaitHeadline);
-  fill_feature_structs(&arrHyperbolic, "data_Files/hyperbolic.txt", "hyperbolic");
-  fill_feature_structs(&arrSlang, "data_Files/slang.txt", "slang");
-  fill_feature_structs(&arrForwardReference, "data_Files/forward_reference.txt", "forward_reference");
-  fill_feature_structs(&arrContraction, "data_Files/contract.txt", "contraction");
-
-  allWordLists[0] = arrHyperbolic;
-  allWordLists[1] = arrSlang;
-  allWordLists[2] = arrForwardReference;
-  allWordLists[3] = arrContraction;
-
-  set_feature_to_zero(&numberFeature, "number");
-  set_feature_to_zero(&hyperbolicFeature, "hyperbolic");
-  set_feature_to_zero(&slangFeature, "slang");
-  set_feature_to_zero(&forwardReferenceFeature, "forward_reference");
-  set_feature_to_zero(&contractionFeature, "contraction");
-
+/*
   for(i = 0; i < HEADLINES; i++){
     feature_number(&numberFeature, arrHeadline[i]);
     feature_string_count(&hyperbolicFeature, arrHeadline[i], arrHyperbolic);
@@ -36,57 +19,34 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline){
     feature_string_count(&forwardReferenceFeature, arrHeadline[i], arrForwardReference);
     feature_string_count(&contractionFeature, arrHeadline[i], arrContraction);
   }
+  */
+
+  for(i = 0; i < HEADLINES; i++){
+    feature_number(&allFeature[0], arrHeadline[i]);
+    feature_string_count(&allFeature[1], arrHeadline[i], allWordLists[0]);
+    feature_string_count(&allFeature[2], arrHeadline[i], allWordLists[1]);
+    feature_string_count(&allFeature[3], arrHeadline[i], allWordLists[2]);
+    feature_string_count(&allFeature[4], arrHeadline[i], allWordLists[3]);
+  }
 
   printf("%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
-         "%-20s is used int %-5d clickbait and %-5d nonclickbait\n", numberFeature.featureName, numberFeature.clickbaitNumber, numberFeature.nonClickbaitNumber,
-                                                               hyperbolicFeature.featureName, hyperbolicFeature.clickbaitNumber, hyperbolicFeature.nonClickbaitNumber,
-                                                               slangFeature.featureName, slangFeature.clickbaitNumber, slangFeature.nonClickbaitNumber,
-                                                               forwardReferenceFeature.featureName, forwardReferenceFeature.clickbaitNumber, forwardReferenceFeature.nonClickbaitNumber,
-                                                               contractionFeature.featureName, contractionFeature.clickbaitNumber, contractionFeature.nonClickbaitNumber);
+         "%-20s is used int %-5d clickbait and %-5d nonclickbait\n", allFeature[0].featureName, allFeature[0].clickbaitNumber, allFeature[0].nonClickbaitNumber,
+                                                               allFeature[1].featureName, allFeature[1].clickbaitNumber, allFeature[1].nonClickbaitNumber,
+                                                               allFeature[2].featureName, allFeature[2].clickbaitNumber, allFeature[2].nonClickbaitNumber,
+                                                               allFeature[3].featureName, allFeature[3].clickbaitNumber, allFeature[3].nonClickbaitNumber,
+                                                               allFeature[4].featureName, allFeature[4].clickbaitNumber, allFeature[4].nonClickbaitNumber);
 
-    output_feature_data_document(numberFeature, hyperbolicFeature, slangFeature,
-                                 forwardReferenceFeature, contractionFeature,
+    output_feature_data_document(allFeature[0], allFeature[1], allFeature[2],
+                                 allFeature[3], allFeature[4],
                                  clickbaitHeadline, nonClickbaitHeadline);
 
   free(arrHeadline);
 }
 
-void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline){
-  FILE *clickbaitFile = fopen("headline_Files/clickbait.txt", "r");
-  FILE *nonClickbaitFile = fopen("headline_Files/non_clickbait.txt", "r");
-  char input[LENGTH];
 
-  if(clickbaitFile != NULL && nonClickbaitFile != NULL){
-    while(fgets(input, sizeof(input), clickbaitFile) != NULL){
-      if(strlen(input) > 1){
-        strcpy(arrHeadline[*totalHeadlines].text, input);
-        arrHeadline[*totalHeadlines].isClickbait = 1;
-        //printf("%d - %s", *totalHeadlines ,arrHeadline[*totalHeadlines].text);
-        *clickbaitHeadline += 1;
-        *totalHeadlines += 1;
-      }
-    }
-    while(fgets(input, sizeof(input), nonClickbaitFile) != NULL){
-      if(strlen(input) > 1){
-        strcpy(arrHeadline[*totalHeadlines].text, input);
-        arrHeadline[*totalHeadlines].isClickbait = 0;
-        //printf("%d - %s", *totalHeadlines ,arrHeadline[*totalHeadlines].text);
-        *nonClickbaitHeadline += 1;
-        *totalHeadlines += 1;
-      }
-    }
-  }else{
-    printf("Error!\n");
-    exit(EXIT_FAILURE);
-  }
-  printf("%d headlines, %d clickbait and %d not clickbait\n", *totalHeadlines, *clickbaitHeadline, *nonClickbaitHeadline);
-
-  fclose(clickbaitFile);
-  fclose(nonClickbaitFile);
-}
 
 void fill_feature_structs(wordLists *arrFeature, char fileName[], char featureName[]){
   FILE *filePointer = fopen(fileName, "r");
@@ -109,11 +69,7 @@ void fill_feature_structs(wordLists *arrFeature, char fileName[], char featureNa
   fclose(filePointer);
 }
 
-void set_feature_to_zero(feature *data, char name[]){
-  strcpy(data->featureName, name);
-  data->clickbaitNumber = 0;
-  data->nonClickbaitNumber = 0;
-}
+
 
 void feature_number(feature *featureData, headline arrHeadline){
   int i = 0, len = strlen(arrHeadline.text), digit = 0;
