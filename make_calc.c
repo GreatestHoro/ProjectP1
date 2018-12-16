@@ -6,29 +6,28 @@
 #include <limits.h>
 #include "train_file.h"
 
-void make_calculations(wordLists allWordLists[], headline *arrHeadline){
+void make_calculations(wordLists allWordLists[], headline *arrHeadline, precisionOfProgram *allPrecisionData, char headlineToCheck[]){
   outputFeatureData featureData[LENGTH];
-  char headline[] = "These Are the, 100 Of Funniest British Tweets Of 2018";
   int numOfFeat, i;
   double percentIsCB, percentIsNotCB;
 
   //copy the trained classifier over to an array of outputFeatureData structs
   copy_data_from_file(featureData, &numOfFeat);
   //scan a headline for features
-  evaluate_headline(featureData, numOfFeat, allWordLists, headline);
+  evaluate_headline(featureData, numOfFeat, allWordLists, headlineToCheck);
   //calculate the chance for the hLine = CB through NB after having scanned its features
   calc_naive_bayes(featureData, numOfFeat, &percentIsCB, &percentIsNotCB);
 
-  run_test_set(arrHeadline, featureData, numOfFeat, allWordLists);
+  run_test_set(arrHeadline, featureData, numOfFeat, allWordLists, allPrecisionData);
 
   printf("\nGiven headline: '%s'\n"
          "There is %.2lf %% chance that the headline is CB and there is\n"
          "%.2lf %% chance it is !CB\n",
-         headline, percentIsCB, percentIsNotCB);
+         headlineToCheck, percentIsCB, percentIsNotCB);
 
 }
 
-void run_test_set(headline *arrHeadline, outputFeatureData featureData[], int numOfFeat, wordLists allWordLists[]){
+void run_test_set(headline *arrHeadline, outputFeatureData featureData[], int numOfFeat, wordLists allWordLists[], precisionOfProgram *allPrecisionData){
   testSet *testDataSet;
   testDataSet = (testSet *) malloc(TESTSIZE * sizeof(testSet));
   int i, headlineAmmount;
@@ -41,10 +40,10 @@ void run_test_set(headline *arrHeadline, outputFeatureData featureData[], int nu
     calc_naive_bayes(featureData, numOfFeat, &percentIsCB, &percentIsNotCB);
     set_prediction(&testDataSet[i], headlineAmmount, percentIsCB);
   }
-  find_precision_racall(testDataSet, headlineAmmount);
+  find_precision_racall(testDataSet, headlineAmmount, allPrecisionData);
 }
 
-void find_precision_racall(testSet *testDataSet, int headlineAmmount){
+void find_precision_racall(testSet *testDataSet, int headlineAmmount, precisionOfProgram *allPrecisionData){
   int truePositives = 0, falsePositives = 0, trueNegatives = 0, falseNegatives = 0, i, result;
   double precision = 0.0, recall = 0.0, f_one = 0.0;
 
@@ -65,11 +64,14 @@ void find_precision_racall(testSet *testDataSet, int headlineAmmount){
   recall = (double)  truePositives / (double) (truePositives + falseNegatives);
   f_one = 2 * ((precision * recall) / (precision + recall));
 
-
-  printf("TP = %d, FP = %d, TN = %d, FN = %d, result = %d, allHeadliens = %d\n", truePositives, falsePositives, trueNegatives, falseNegatives, result, headlineAmmount);
-  printf("The F1 score is %.4lf\n", f_one);
-  printf("Our precision is %.4lf\n"
-         "and recall is %.4lf\n", precision, recall);
+  allPrecisionData->headlineAmmount = headlineAmmount;
+  allPrecisionData->f_one = f_one;
+  allPrecisionData->precision = precision;
+  allPrecisionData->recall = recall;
+  // printf("TP = %d, FP = %d, TN = %d, FN = %d, result = %d, allHeadliens = %d\n", truePositives, falsePositives, trueNegatives, falseNegatives, result, headlineAmmount);
+  // printf("The F1 score is %.4lf\n", f_one);
+  // printf("Our precision is %.4lf\n"
+         // "and recall is %.4lf\n", precision, recall);
 }
 
 void set_prediction(testSet *testDataSet, int headlineAmmount, double percentIsCB){
@@ -184,21 +186,21 @@ void calc_prob_is_not_cb(outputFeatureData featureData[], int numOfFeat, int num
 
 }
 
-void evaluate_headline(outputFeatureData featureData[], int numOfFeat, wordLists allWordLists[], char headline[]){
+void evaluate_headline(outputFeatureData featureData[], int numOfFeat, wordLists allWordLists[], char headlineToCheck[]){
   int i, j;
-      check_number_feature(headline, &featureData[0]);
+      check_number_feature(headlineToCheck, &featureData[0]);
       for(i = 1; i < numOfFeat; i++) {
-        look_through_headline(headline, &featureData[i], allWordLists);
+        look_through_headline(headlineToCheck, &featureData[i], allWordLists);
       }
 
 }
 
-void look_through_headline(char headline[], outputFeatureData *featureData, wordLists allWordLists[]){
+void look_through_headline(char headlineToCheck[], outputFeatureData *featureData, wordLists allWordLists[]){
   char tempString[LENGTH];
   int i = 0, j = 0;
   featureData->isPrevailent = 0;
 
-  strcpy(tempString, headline);
+  strcpy(tempString, headlineToCheck);
   while(tempString[i]){
      tempString[i] = tolower(tempString[i]);
     i++;
@@ -216,11 +218,11 @@ void look_through_headline(char headline[], outputFeatureData *featureData, word
     }
 }
 
-void check_number_feature(char headline[], outputFeatureData *featureData){
-  int i = 0, len = strlen(headline), digit = 0;
+void check_number_feature(char headlineToCheck[], outputFeatureData *featureData){
+  int i = 0, len = strlen(headlineToCheck), digit = 0;
 
   do{
-    if(digit = isdigit(headline[i])) {
+    if(digit = isdigit(headlineToCheck[i])) {
       featureData->isPrevailent = 1;
       digit = 1;
     }else{
