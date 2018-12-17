@@ -5,6 +5,8 @@
 #include <limits.h>
 #include "train_file.h"
 
+#define STR_SIZE 200
+
 void user_interface_two(int *answer);
 void user_interface_one(int *answer);
 void print_precisiont_and_recall(precisionOfProgram allPrecisionData[]);
@@ -13,7 +15,7 @@ int main(void){
   wordLists allWordLists[NUM_OF_WORD_FEATS];
   feature allFeature[NUM_OF_WORD_FEATS + 1];
   precisionOfProgram allPrecisionData[1];
-  char headlineToCheck[] = "These Are the, 100 Of Funniest British Tweets Of 2018";
+  char headlineToCheck[STR_SIZE], temp;
   headline *arrHeadline;
   int answer = 0;
 
@@ -28,6 +30,9 @@ int main(void){
   do{
     user_interface_two(&answer);
     if(answer == 1){
+        printf("Insert a headline you would like to scan> \n");
+        scanf("%c", &temp); // to read a character from input buffer
+        scanf("%[^\n]", headlineToCheck);
         make_calculations(allWordLists, arrHeadline, allPrecisionData, headlineToCheck);
     }else if(answer == 2){
       print_precisiont_and_recall(allPrecisionData);
