@@ -21,9 +21,6 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature a
     feature_string_count(&allFeature[3], arrHeadline[i], allWordLists[2]); /*contraction*/
     feature_string_count(&allFeature[4], arrHeadline[i], allWordLists[3]); /*Forward reference*/
   }
-  for(i = 0; i < 5; i++){
-    printf("%s - CB = %d | !CB = %d\n", allFeature[i].featureName, allFeature[i].clickbaitNumber, allFeature[i].nonClickbaitNumber);
-  }
 
   /*Prints how many times each feature have been seen*/
   printf("%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
