@@ -29,8 +29,8 @@ void initilize_program(wordLists allWordLists[], feature allFeature[]){
   allFeature[0] = numberFeature;
   allFeature[1] = hyperbolicFeature;
   allFeature[2] = slangFeature;
-  allFeature[3] = contractionFeature;
-  allFeature[4] = forwardReferenceFeature;
+  allFeature[3] = forwardReferenceFeature;
+  allFeature[4] = contractionFeature;
 
 }
 
