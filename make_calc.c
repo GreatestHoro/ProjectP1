@@ -98,7 +98,6 @@ void load_test_set(int *headlineAmmount, testSet *testDataSet){
       strcpy(testDataSet[i].text, input);
       strcpy(input + len, "\0");
       testDataSet[i].isCB = 0;
-      // printf("%s\n", testDataSet[i].text);
       i++;
     }
   }
@@ -108,19 +107,17 @@ void load_test_set(int *headlineAmmount, testSet *testDataSet){
         strcpy(testDataSet[i].text, input);
         strcpy(input + len, "\0");
         testDataSet[i].isCB = 1;
-        // printf("%s\n", testDataSet[i].text);
         i++;
     }
   }
   *headlineAmmount = i;
-  // printf("%d headlines\n", *headlineAmmount);
   fclose(fileNonCB);
   fclose(fileCB);
 }
 
 
-//function that takes in featureData array, and calculates the probability for a headline is
-//clickbait given these features are isPrevailent in the headline
+/*function that takes in featureData array, and calculates the probability for a headline is
+clickbait given these features are isPrevailent in the headline*/
 void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *percentIsCB, double *percentIsNotCB){
   double numerator = 1.0, denominator = 1.0, probIsCB, probIsNotCB, totalProbability;
   int numOfClickbait, numOfNonClickbait, totalHeadlines;
@@ -129,10 +126,10 @@ void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *pe
   numOfNonClickbait = featureData[numOfFeat - 1].nonClickbaitNumber;
   totalHeadlines = numOfClickbait + numOfNonClickbait;
 
-  //1st objective: is to calculate the probability that a HLine is CB given these prevailent features
+  /*1st objective: is to calculate the probability that a HLine is CB given these prevailent features*/
   calc_prob_is_cb(featureData, numOfFeat, numOfClickbait, numOfNonClickbait, totalHeadlines, &numerator, &denominator, &probIsCB);
-  //2nd objective: to calculate the probabilty for that the given hLine is not clickbait according to NB
-  //reset the numerator for the new Calculations, denominator is the same
+  /*2nd objective: to calculate the probabilty for that the given hLine is not clickbait according to NB
+  reset the numerator for the new Calculations, denominator is the same*/
   numerator = 1.0;
   calc_prob_is_not_cb(featureData, numOfFeat, numOfClickbait, numOfNonClickbait, totalHeadlines, &numerator, denominator, &probIsNotCB);
 
@@ -142,15 +139,15 @@ void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *pe
   *percentIsNotCB = (probIsNotCB / totalProbability) * 100;
 
 }
-//function that calculates the probabilty for that af hLine is CB given features
-// P(CB = Yes | x1, x2, ... xn)
+/*function that calculates the probabilty for that af hLine is CB given features
+P(CB = Yes | x1, x2, ... xn)*/
 void calc_prob_is_cb(outputFeatureData featureData[], int numOfFeat, int numOfClickbait, int numOfNonClickbait, int totalHeadlines,
                       double *numerator, double *denominator, double *probIsCB) {
   int i;
-  //loop to calculate each numerator and denominator of features that are prevailent in the hLine according to NB
-  //numerator: P(x1 = yes | CB) * P( x2 = yes | CB)) * P(x3 = yes | CB) ... P(xn = yes | CB)
-  //denominator:  P(X1 = yes) * P(x2 = yes) * ... P(xn = yes)
-  for(i = 0; i < numOfFeat - 1; i++){ //numOfFeat - 1 because the last featureData is not a feauture but holds overall data
+  /*loop to calculate each numerator and denominator of features that are prevailent in the hLine according to NB
+  numerator: P(x1 = yes | CB) * P( x2 = yes | CB)) * P(x3 = yes | CB) ... P(xn = yes | CB)
+  denominator:  P(X1 = yes) * P(x2 = yes) * ... P(xn = yes)*/
+  for(i = 0; i < numOfFeat - 1; i++){ /*numOfFeat - 1 because the last featureData is not a feauture but holds overall data*/
      if (featureData[i].isPrevailent == 1){
       *numerator *= ((double) featureData[i].clickbaitNumber / (double) numOfClickbait);
       *denominator *= (((double) featureData[i].clickbaitNumber + featureData[i].nonClickbaitNumber) / (double) totalHeadlines);
@@ -160,18 +157,18 @@ void calc_prob_is_cb(outputFeatureData featureData[], int numOfFeat, int numOfCl
     }
 
   }
-  //multiply P(CB = Yes) to the numerator
+  /*multiply P(CB = Yes) to the numerator*/
   *numerator *= ((double) numOfClickbait / (double) totalHeadlines);
-  //set the probabilty for is CB = P(CB = Yes | x1, x2, ... xn)
+  /*set the probabilty for is CB = P(CB = Yes | x1, x2, ... xn)*/
   *probIsCB = *numerator / *denominator;
 }
-//function that calculates the probability for that hLine is Not CB given features
-// P(CB = No | x1, x2, ... xn)
+/*function that calculates the probability for that hLine is Not CB given features
+P(CB = No | x1, x2, ... xn)*/
 void calc_prob_is_not_cb(outputFeatureData featureData[], int numOfFeat, int numOfClickbait, int numOfNonClickbait, int totalHeadlines,
                       double *numerator, double denominator, double *probIsNotCB) {
   int i;
-  //loop to calculate the product of each numerator like before, but just now with the new formula
-  //numerator: P(x1 = yes | !CB) * P(x2 = yes | !CB) ... P(x3 = yes | !CB)
+  /*loop to calculate the product of each numerator like before, but just now with the new formula
+  numerator: P(x1 = yes | !CB) * P(x2 = yes | !CB) ... P(x3 = yes | !CB)*/
   for(i = 0; i < numOfFeat - 1; i++) {
     if (featureData[i].isPrevailent == 1){
       *numerator *= ((double) featureData[i].nonClickbaitNumber / (double) numOfNonClickbait);
@@ -181,7 +178,7 @@ void calc_prob_is_not_cb(outputFeatureData featureData[], int numOfFeat, int num
   }
   //multiply P(CB = No) to the numerator
   *numerator *= ((double) numOfNonClickbait / (double) totalHeadlines);
-  //set the probability for is !CB = P(CB = No | x1, x2, ... xn) - the denominator is the same
+  /*set the probability for is !CB = P(CB = No | x1, x2, ... xn) - the denominator is the same*/
   *probIsNotCB = *numerator / denominator;
 
 }
