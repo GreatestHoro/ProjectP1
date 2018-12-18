@@ -48,7 +48,6 @@ void find_precision_racall(testSet *testDataSet, int headlineAmmount, precisionO
   double precision = 0.0, recall = 0.0, f_one = 0.0, f_half;
 
   for(i = 0; i < headlineAmmount; i++){
-    // printf("ourPrediction = %d isCB = %d\n", testDataSet[i].ourPrediction, testDataSet[i].isCB);
     if(testDataSet[i].ourPrediction == 1 && testDataSet[i].isCB == 1){
       truePositives++;
     }else if(testDataSet[i].ourPrediction == 1 && testDataSet[i].isCB == 0){
@@ -74,15 +73,10 @@ void find_precision_racall(testSet *testDataSet, int headlineAmmount, precisionO
   allPrecisionData->falsePositives = falsePositives;
   allPrecisionData->trueNegatives = trueNegatives;
   allPrecisionData->falseNegatives = falseNegatives;
-  // printf("TP = %d, FP = %d, TN = %d, FN = %d, result = %d, allHeadliens = %d\n", truePositives, falsePositives, trueNegatives, falseNegatives, result, headlineAmmount);
-  // printf("The F1 score is %.4lf\n", f_one);
-  // printf("Our precision is %.4lf\n"
-         // "and recall is %.4lf\n", precision, recall);
 }
 
 void set_prediction(testSet *testDataSet, int headlineAmmount, double percentIsCB){
   if(percentIsCB > 50.0){
-    // printf("%lf\n", percentIsCB);
     testDataSet->ourPrediction = 1;
   }else{
     testDataSet->ourPrediction = 0;
@@ -139,7 +133,7 @@ void calc_naive_bayes(outputFeatureData featureData[], int numOfFeat, double *pe
   numerator = 1.0;
   calc_prob_is_not_cb(featureData, numOfFeat, numOfClickbait, numOfNonClickbait, totalHeadlines, &numerator, denominator, &probIsNotCB);
 
-  //calculate the probabilities to percentages and return those through output parameters
+  /*calculate the probabilities to percentages and return those through output parameters*/
   totalProbability = probIsCB + probIsNotCB;
   *percentIsCB = (probIsCB / totalProbability) * 100;
   *percentIsNotCB = (probIsNotCB / totalProbability) * 100;
@@ -182,7 +176,7 @@ void calc_prob_is_not_cb(outputFeatureData featureData[], int numOfFeat, int num
       *numerator *= ((double)(numOfNonClickbait - featureData[i].nonClickbaitNumber) / (double) numOfNonClickbait);
     }
   }
-  //multiply P(CB = No) to the numerator
+  /*multiply P(CB = No) to the numerator*/
   *numerator *= ((double) numOfNonClickbait / (double) totalHeadlines);
   /*set the probability for is !CB = P(CB = No | x1, x2, ... xn) - the denominator is the same*/
   *probIsNotCB = *numerator / denominator;
@@ -213,7 +207,6 @@ void look_through_headline(char headlineToCheck[], outputFeatureData *featureDat
         do{
           if(strstr(tempString, allWordLists[i].words[j].word) != NULL){
             featureData->isPrevailent = 1;
-            // printf("specific words/phrases found - '%s' (%s) \n", allWordLists[i].words[j].word, featureData->featureName);
           }
           j++;
         }while(j < allWordLists[i].totalWords && featureData->isPrevailent != 1);

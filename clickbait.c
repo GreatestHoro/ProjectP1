@@ -48,14 +48,13 @@ int main(void){
 
 
 void print_precisiont_and_recall(precisionOfProgram allPrecisionData[]){
-  printf("On The Test Of %d Headlines - "
+  printf("On The Test Of %d Headlines\n"
          "Confusion Matrix:\n"
          "TP = %d | FP = %d\n"
          "FN = %d | TN = %d\n"
          "The Programs Metrics Are\n"
-         "F1 Score: %.2lf\n"
-         "F0.5 Score: %.2lf\n"
-         "Precision: %.2lf\nRecall: %.2lf", allPrecisionData[0].headlineAmmount,
+         "F1 Score: %.2lf  | F0.5 Score: %.2lf\n"
+         "Precision: %.2lf | Recall: %.2lf", allPrecisionData[0].headlineAmmount,
                                                              allPrecisionData[0].truePositives,
                                                              allPrecisionData[0].falsePositives,
                                                              allPrecisionData[0].falseNegatives,
@@ -81,7 +80,6 @@ void user_interface_one(int *answer){
 void user_interface_two(int *answer){
   int i;
   printf("\n---------------------------------------------------------\n"
-         "Welcome to the clicbait detector!\n"
          "What do you wish to do?\n\n"
          "Press [1] to check if a headline is clickbait\n"
          "Press [2] to see the precision and recall for the program\n"

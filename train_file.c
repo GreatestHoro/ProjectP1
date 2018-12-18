@@ -23,7 +23,8 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature a
   }
 
   /*Prints how many times each feature have been seen*/
-  printf("%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
+  printf("On those headlines, the ammount of features found was:\n"
+         "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
          "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
@@ -69,7 +70,8 @@ void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *click
     printf("Error!\n");
     exit(EXIT_FAILURE);
   }
-  printf("%d headlines, %d clickbait and %d not clickbait\n", *totalHeadlines, *clickbaitHeadline, *nonClickbaitHeadline);
+  printf("The updated database is checked on:\n"
+         "%d headlines, %d clickbait and %d not clickbait\n\n", *totalHeadlines, *clickbaitHeadline, *nonClickbaitHeadline);
 
   fclose(clickbaitFile);
   fclose(nonClickbaitFile);

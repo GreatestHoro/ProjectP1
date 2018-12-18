@@ -42,9 +42,9 @@ void fill_feature_structs(wordLists *arrFeature, char fileName[], char featureNa
     printf("Sorry Could Not Open File In fill_feature_structs. Bye.\n");
     exit(EXIT_FAILURE);
   }
+  strcpy(arrFeature->featureName, featureName);
   while(fgets(input, LENGTH, filePointer) != NULL){
     len = strlen(input) - 1;
-    strcpy(arrFeature->featureName, featureName);
     if(len > 1){
       strcpy(input + len, "\0");
       strcpy(arrFeature->words[i].word, input);
