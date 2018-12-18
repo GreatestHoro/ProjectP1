@@ -45,7 +45,7 @@ void run_test_set(headline *arrHeadline, outputFeatureData featureData[], int nu
 
 void find_precision_racall(testSet *testDataSet, int headlineAmmount, precisionOfProgram *allPrecisionData){
   int truePositives = 0, falsePositives = 0, trueNegatives = 0, falseNegatives = 0, i, result;
-  double precision = 0.0, recall = 0.0, f_one = 0.0;
+  double precision = 0.0, recall = 0.0, f_one = 0.0, f_half;
 
   for(i = 0; i < headlineAmmount; i++){
     // printf("ourPrediction = %d isCB = %d\n", testDataSet[i].ourPrediction, testDataSet[i].isCB);
@@ -63,11 +63,13 @@ void find_precision_racall(testSet *testDataSet, int headlineAmmount, precisionO
   precision = (double) truePositives / (double) (truePositives + falsePositives);
   recall = (double)  truePositives / (double) (truePositives + falseNegatives);
   f_one = 2 * ((precision * recall) / (precision + recall));
+  f_half = ((1 + 0.5 * 0.5) * precision * recall) / ((0.5 * 0.5 * precision) + recall);
 
   allPrecisionData->headlineAmmount = headlineAmmount;
   allPrecisionData->f_one = f_one;
   allPrecisionData->precision = precision;
   allPrecisionData->recall = recall;
+  allPrecisionData->f_half = f_half;
   // printf("TP = %d, FP = %d, TN = %d, FN = %d, result = %d, allHeadliens = %d\n", truePositives, falsePositives, trueNegatives, falseNegatives, result, headlineAmmount);
   // printf("The F1 score is %.4lf\n", f_one);
   // printf("Our precision is %.4lf\n"

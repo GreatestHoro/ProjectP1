@@ -23,11 +23,11 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature a
   }
 
   /*Prints how many times each feature have been seen*/
-  printf("%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
-         "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
-         "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
-         "%-20s is used int %-5d clickbait and %-5d nonclickbait\n"
-         "%-20s is used int %-5d clickbait and %-5d nonclickbait\n", allFeature[0].featureName, allFeature[0].clickbaitNumber, allFeature[0].nonClickbaitNumber,
+  printf("%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
+         "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
+         "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
+         "%-20s is used in %-5d clickbait and %-5d nonclickbait\n"
+         "%-20s is used in %-5d clickbait and %-5d nonclickbait\n", allFeature[0].featureName, allFeature[0].clickbaitNumber, allFeature[0].nonClickbaitNumber,
                                                                allFeature[1].featureName, allFeature[1].clickbaitNumber, allFeature[1].nonClickbaitNumber,
                                                                allFeature[2].featureName, allFeature[2].clickbaitNumber, allFeature[2].nonClickbaitNumber,
                                                                allFeature[3].featureName, allFeature[3].clickbaitNumber, allFeature[3].nonClickbaitNumber,

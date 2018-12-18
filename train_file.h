@@ -29,6 +29,7 @@ typedef struct{
   int result;
   int headlineAmmount;
   double f_one;
+  double f_half;
   double precision;
   double recall;
 }precisionOfProgram;

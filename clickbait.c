@@ -48,10 +48,14 @@ int main(void){
 
 
 void print_precisiont_and_recall(precisionOfProgram allPrecisionData[]){
-  printf("On the test of %d headlines\n"
-         "This program go at F1 score of %.2lf\n"
-         "a precision of : %.2lf\nand\na recall of : %.2lf", allPrecisionData[0].headlineAmmount,
-                                                             allPrecisionData[0].f_one, allPrecisionData[0].precision,
+  printf("On The Test Of %d Headlines - "
+         "The Programs Metrics Are\n"
+         "F1 Score: %.2lf\n"
+         "F0.5 Score: %.2lf\n"
+         "Precision: %.2lf\nRecall: %.2lf", allPrecisionData[0].headlineAmmount,
+                                                             allPrecisionData[0].f_one,
+                                                             allPrecisionData[0].f_half,
+                                                             allPrecisionData[0].precision,
                                                              allPrecisionData[0].recall);
 }
 
