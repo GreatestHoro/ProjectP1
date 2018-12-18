@@ -70,6 +70,10 @@ void find_precision_racall(testSet *testDataSet, int headlineAmmount, precisionO
   allPrecisionData->precision = precision;
   allPrecisionData->recall = recall;
   allPrecisionData->f_half = f_half;
+  allPrecisionData->truePositives = truePositives;
+  allPrecisionData->falsePositives = falsePositives;
+  allPrecisionData->trueNegatives = trueNegatives;
+  allPrecisionData->falseNegatives = falseNegatives;
   // printf("TP = %d, FP = %d, TN = %d, FN = %d, result = %d, allHeadliens = %d\n", truePositives, falsePositives, trueNegatives, falseNegatives, result, headlineAmmount);
   // printf("The F1 score is %.4lf\n", f_one);
   // printf("Our precision is %.4lf\n"

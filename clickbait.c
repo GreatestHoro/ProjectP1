@@ -49,10 +49,17 @@ int main(void){
 
 void print_precisiont_and_recall(precisionOfProgram allPrecisionData[]){
   printf("On The Test Of %d Headlines - "
+         "Confusion Matrix:\n"
+         "TP = %d | FP = %d\n"
+         "FN = %d | TN = %d\n"
          "The Programs Metrics Are\n"
          "F1 Score: %.2lf\n"
          "F0.5 Score: %.2lf\n"
          "Precision: %.2lf\nRecall: %.2lf", allPrecisionData[0].headlineAmmount,
+                                                             allPrecisionData[0].truePositives,
+                                                             allPrecisionData[0].falsePositives,
+                                                             allPrecisionData[0].falseNegatives,
+                                                             allPrecisionData[0].trueNegatives,
                                                              allPrecisionData[0].f_one,
                                                              allPrecisionData[0].f_half,
                                                              allPrecisionData[0].precision,
