@@ -39,7 +39,7 @@ void train_classifier(wordLists allWordLists[], headline *arrHeadline, feature a
                                  allFeature[3], allFeature[4],
                                  clickbaitHeadline, nonClickbaitHeadline);
 
-  free(arrHeadline);
+
 }
 
 void fill_headline_struct(headline *arrHeadline, int *totalHeadlines, int *clickbaitHeadline, int *nonClickbaitHeadline){

@@ -41,6 +41,7 @@ int main(void){
     }
   }while(answer < 3 && answer > 0);
 
+  free(arrHeadline);
   return EXIT_SUCCESS;
 }
 
